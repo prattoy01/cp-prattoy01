@@ -1,0 +1,55 @@
+<snippet>
+  <content><![CDATA[
+#include <bits/stdc++.h>
+using namespace std;
+
+// datatypes:
+#define     ll   long long int
+// #define int long long int
+#define ull unsigned long long int
+#define int128 __int128_t
+
+// I/O:
+#define pb push_back
+#define eb emplace_back
+#define pp pop_back
+
+#define sin insert
+#define all(x) x.begin(), x.end()
+#define amhie const
+
+#define faster                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(0);                       \
+    cout.tie(0);
+
+#define test_case
+
+const int N=100005;
+
+void test(int tc)
+{
+    $1
+    
+}
+int32_t main()
+{
+    faster
+
+        int t = 1,
+            tc = 0;
+
+#ifdef test_case
+    cin >> t;
+#endif
+    while (t--)
+    {
+        test(++tc);
+    }
+}
+]]></content>
+  <tabTrigger>vtc</tabTrigger>
+  <description></description>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <!-- <scope >source.python</scope > -->
+</snippet>

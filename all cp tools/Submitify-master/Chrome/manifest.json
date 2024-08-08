@@ -1,0 +1,12 @@
+{
+  "manifest_version": 2,
+  "name": "Submitify",
+  "version": "2.0.0",
+  "description": "Allows you to submit solutions from the problem page without redirect.",
+ 
+  "content_scripts": [{
+    "matches": ["https://codeforces.com/*"],
+      "js": ["Submitify.js"]
+  }]
+ 
+}

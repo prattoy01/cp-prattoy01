@@ -1,50 +1,77 @@
+typedef int item;
 
-#include<bits/stdc++.h>
-using namespace std;
+// struct item {
+//     int suf, pref, val;
+// };
+
+
 template<class T>
-struct segtree {
+struct ST
+{
+#define lc (at << 1)
+#define rc ((at << 1) | 1)
     int n;
-    vector<T> tree;
-    segtree(int len) : n(len) {
-        tree.resize(4 * len, 0);
-    }
-    // change combine function
-    T combine(T x, T y) {
-        return x + y;
-    }
-    void build(vector<T> &arr, int at, int l, int r) {
-        if (l == r) return void(tree[at] = arr[l]);
-        int m = (l + r) >> 1;
-        build(arr, at << 1, l, m);
-        build(arr, at << 1 | 1, m + 1, r);
-        tree[at] = combine(tree[at << 1], tree[at << 1 | 1]);
-    }
-    void Build(vector<T> &arr) { build(arr, 1, 0, n - 1); } // Use this
+    std::vector<T>values;
 
-    void update(int at, int l, int r, int p, T val) {
-        if (l == r) return void(tree[at] = val); // change the update type
-        int m = (l + r) >> 1;
-        if (p <= m) update(at << 1, l, m, p, val);
-        else update(at << 1 | 1, m + 1, r, p, val);
-        tree[at] = combine(tree[at << 1], tree[at << 1 | 1]);
-    }
-    void Update(int p, T val) { update(1, 0, n - 1, p, val); } // Use this
+    ST(int _n) {
+        values.resize(4 * _n, 0);
 
-    T query(int at, int l, int r, int L, int R) {
-        if (L <= l && r <= R) return tree[at];
-        int m = (l + r) >> 1;
-        if (R <= m) return query(at << 1, l, m, L, R);
-        if (m < L) return query(at << 1 | 1, m + 1, r, L, R);
-        return combine(query(at << 1, l, m, L, R), query(at << 1 | 1, m + 1, r, L, R));
+        n = _n;
     }
-    T Query(int l, int r) { return query(1, 0, n - 1, l, r); } // Use this
+
+
+
+    item marge(T a, T b)
+    {
+        return a + b;
+    }
+
+    void build(vector<int>&arr, int at, int b, int e)
+    {
+
+        if (b == e)
+        {
+            values[at] = arr[b];
+            return;
+        }
+        int mid = (b + e) >> 1;
+        build(arr, lc, b, mid);
+        build(arr, rc, mid + 1, e);
+        values[at] = marge(values[lc], values[rc]);
+    }
+    void Build(vector<int>&arr) {build(arr, 1, 1, n);} //change here
+    void upd(int at , int b, int e, int i, int val)
+    {
+
+        if (i < b or e < i)
+            return;
+        if (b == i and e == i)
+        {
+            values[at] = val;
+            return;
+        }
+        int mid = (b + e) >> 1;
+        upd(lc, b, mid, i, val);
+        upd(rc, mid + 1, e, i, val);
+
+        values[at] = marge(values[lc], values[rc]);
+    }
+    void Upd(int b, int val) {upd(1, 1, n, b, val);} //change here
+    T query(int at, int b, int e, int i, int j)
+    {
+
+
+        if (j < b or e < i)
+            return 0; // change here
+
+        if (b >= i and e <= j)
+        {
+            return values[at];
+        }
+
+        int mid = (b + e) >> 1;
+
+        return marge(query(lc, b, mid, i, j), query(rc, mid + 1, e, i, j));
+    }
+    T Query(int l, int r) {return query(1, 1, n, l, r);} //change here
 };
-int32_t main() {
-    vector<int> a = {1, 2, 3, 4, 5};
-    int n = a.size();
-    segtree<int> st(n);
-    st.Build(a);
-    st.Update(2, 5);
-    cout << st.Query(1, 2) << endl;
-    return 0;
-}
